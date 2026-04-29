@@ -1,4 +1,5 @@
 /cping
+/dist/
 *.exe
 *.test
 *.out
