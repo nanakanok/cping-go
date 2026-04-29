@@ -13,23 +13,24 @@ go build -o cping
 
 ```sh
 sudo ./cping ping.kooshin.net
+sudo ./cping -c 1400 ping.kooshin.net   # ASCII アート向け
+sudo ./cping ping.kooshin.net -c 0      # 無限 (Ctrl-C で停止) — フラグは <dst> の前後どちらでも可
 ```
 
-raw socket を使わない場合（Linux で `net.ipv4.ping_group_range` が許可されていれば動く）:
-
-```sh
-./cping -privileged=false ping.kooshin.net
-```
+raw ICMP socket を使うため `sudo` 推奨（または `CAP_NET_RAW`）。
 
 ### Flags
 
 | Flag | Default | Meaning |
 | :--- | :--- | :--- |
-| `-c` | `1400` | 送信パケット数 |
-| `-s` | `56` | payload サイズ (bytes) |
-| `-W` | `2s` | パケット毎のタイムアウト |
-| `-i` | `0` | 送信間隔 (0 = 連続送信) |
-| `-privileged` | `true` | raw ICMP socket を使う (要 root / CAP_NET_RAW) |
+| `-c`, `--count N` | `5` | 送信回数（`0` = 無限） |
+| `-s`, `--size N` | `56` | ICMP payload サイズ (bytes) |
+| `-W`, `--timeout S` | `2` | パケット毎のタイムアウト (秒, 小数可) |
+| `-l`, `--width N` | `70` | 改行幅（1行の記号数） |
+| `-v`, `--verbose` | | 詳細ログを stderr に |
+| `-q`, `--quiet` | | 記号出力を抑制（統計のみ） |
+
+`--ttl / --df / --source / --interval / --tos / --pattern / --ipv6 / --pace / --linger` は受理するが現状未実装 (NYI)。
 
 ## Sample output
 
